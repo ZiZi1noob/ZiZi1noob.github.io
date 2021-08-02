@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name ="ZiZi">
+        <title>CS416 DataVis Final Project -- ZiZi</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap" rel="stylesheet">
+        <script src="https://kit.fontawesome.com/1e08ac619b.js" crossorigin="anonymous"></script>
+        <script src = "https://unpkg.com/d3@5.6.0/dist/d3.min.js"></script>
+        <script src = "https://unpkg.com/topojson@3.0.2/dist/topojson.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
+        <script src="function.js"></script>
+    </head>
+</html>
+<body>
+
+    <section class="coverPage">
+    <div class ="text-box">
+        <h1>Is World Really Getting Better?</h1>
+        <p>World seems like becoming better at the economy, education, technology, and safety. But how about life quality, inflation, suicide rate, intentional murder rate? How about your country？<br>You will find it on your own.</p>
+        <a href="#bubbleChart" class ="hero-btn">Let's Start！</a>
+    </div>
+    </section>
+
+
+    <section class= "pageThree" id = "bubbleChart">
+        <h1>Bubble Chart</h1>
+        <p>Select Year and Find Details</p>
+        <select class = "select-btn" id="selectBtn" onchange="slectBtn()">
+            <option value = "1990">----------Select Year----------</option>
+            <option value = "1991" >1991</option>
+            <option value = "1992">1992</option>
+            <option value = "1993">1993</option>
+            <option value = "1994">1994</option>
+            <option value = "1995">1995</option>
+            <option value = "1996">1996</option>
+            <option value = "1997">1997</option>
+            <option value = "1998">1998</option>
+            <option value = "1999">1999</option>
+            <option value = "2000">2000</option>
+            <option value = "2001">2001</option>
+            <option value = "2002">2002</option>
+            <option value = "2003">2003</option>
+            <option value = "2004">2004</option>
+            <option value = "2005">2005</option>
+            <option value = "2006">2006</option>
+            <option value = "2007">2007</option>
+            <option value = "2008">2008</option>
+            <option value = "2009">2009</option>
+            <option value = "2010">2010</option>
+            <option value = "2011">2011</option>
+            <option value = "2012">2012</option>
+            <option value = "2013">2013</option>
+            <option value = "2014">2014</option>
+            <option value = "2015">2015</option>
+            <option value = "2016">2016</option>
+            <option value = "2017">2017</option>
+            <option value = "2018">2018</option>
+        </select>
+        <select class = "select-btn" id="selectBtn" onchange="location = this.value;">
+            <option >----------Direction----------</option>
+            <option value = "" >Main Page</option>
+            <option value = "#WorldMap" >Next Page</option>
+        </select>
+    </section>
+    <div id ="bubbleSVG"></div>
+
+    <section class= "MapPage" id = "WorldMap">
+        <h1><a href=""> World Map</a></h1>
+        <p>Must Click Country to Continue</p>
+            <select class = "select-btn" id="selectBtn" onchange="location = this.value;">
+                <option >----------Direction----------</option>
+                <option value = "" >----------Main Page--------</option>
+                <option value = "#bubbleChart" >----------Last Page----------</option>
+            </select>
+        <div class = "row">
+            <div class = "mapDiv" width = "1000px">
+                <h2>Tips<br/> Move to Here</h2>
+                <h3 >√&nbsp Tooltip</h3>
+                <h3 >√&nbsp Annotation</h3>
+                <h3 >√&nbsp Direction</h3>
+                <h3 >√&nbsp Zoom</h3>
+                <a class = "reset-btn"> <h3 onclick="resetBtn()">⚪ Reset Map</h3></a>
+            </div>
+            <a href="#chartsPage">
+            <svg id = "mapSVG" ></svg>
+            </a>
+            <div></div>
+            <div></div>
+        </div>
+    </section>
+
+<section class= "pageThree" id = "chartsPage">
+    <h1>Charts</h1>
+    <p>Click Interested Chart</p>
+</section>
+
+<section class="chartpage">
+    <nav>
+        <div class ="chartpageDiv">
+        <ul>
+            <li id="inflatIndex">Inflation Rate</li>
+            <li id="InHmIndex">Intentional Homicides</li>
+            <li id="UmpRIdex">Unemployment Rate</li>
+            <li id="ScMtIndex">Suicide Mortality</li>
+            <li><a href="#endPage">End Page</a></li>
+        </ul>
+        </div>
+    </nav>
+    <div id ="chartsArea"></div>
+    </nav>
+</section>
+
+<!------footer---------------->
+
+<section class="endPage" id ="endPage">
+    <div class ="text-box">
+        <h1>End</h1>
+        <p><i>By Ziyang Zhan</i><br>ziyangz6@illinois.edu<br>CS416 Data Visualization @ University of Illinois at Urbana-Champaign<br>08/01/2021, in memory of my first coding project</p>
+        <a href="" class ="hero-btn">Restart</a>
+    </div>
+    </section>
+<script>
+    var getName = "temp";
+    const height = screen.height;
+    const width = screen.width;
+    const csvData = d3.csv("https://raw.githubusercontent.com/ZiZi1noob/UIUC416-DataVis-FinalProject/main/fixedDatafixed.csv");
+   
+///////////////////////////////////////////////////////Bubble Chart////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////Bubble Chart////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////Bubble Chart////////////////////////////////////////////////////////////////////
+    slectBtn(1990);
+
+    function slectBtn(selectBtnYear){
+
+        d3.select("#bubbleSVG > *").remove();
+        selectBtnYear = $("#selectBtn").val();   //get button value
+        selectBtnYear = parseInt(selectBtnYear);
+        let sortedObjectArray = [];
+
+        csvData.then(function(data){
+            data.forEach(function(data){   // calls a function once for each element in an array, in order
+            stringToNumber(data);
+        if (data["Year"] == selectBtnYear){
+            sortedObjectArray.push(data);} //filter by country and leave the targeted data with specific country
+        });
+        bubbleChart(sortedObjectArray);
+        });
+
+    }
+///////////////////////////////////////////////////////Bubble Chart////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////Bubble Chart////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////Bubble Chart////////////////////////////////////////////////////////////////////
+    /*-------------------------------------------------------World Map--------------------------------*/
+    /*-------------------------------------------------------World Map--------------------------------*/
+    /*-------------------------------------------------------World Map--------------------------------*/
+  
+    
+    const g = d3.select("#mapSVG")
+                .attr("height",height*0.6)
+                .attr("width", width*0.5)
+                .append("g");
+
+
+    const preProjection =d3.geoNaturalEarth1();                         //d3.geoPath generates SVG path data string or renders the path to a canvas
+    const pathDrawing = d3.geoPath().projection(preProjection);         //projection()  geoInterrupt  geoNaturalEarth1
+
+
+    zoom = d3.zoom().on("zoom", ()=>{g.attr("transform", d3.event.transform);});
+    resetZoom = g.call(zoom);
+
+    g.append("path")                                                      //draw sphere for squared map
+        .attr("class", "bgColor")
+        .attr("d", pathDrawing({type: "Sphere"}));
+
+    Promise.all([                                                       //loading two files
+        d3.tsv("https://unpkg.com/world-atlas@1.1.4/world/110m.tsv"),           
+        d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json")])
+        .then(([idData, countryData]) => {
+            const countryName = {};
+            idData.forEach(data =>{
+            countryName[data.iso_n3] = data.name;
+            });
+            const drawCountry = topojson.feature(countryData, countryData.objects.countries);
+            
+            g.selectAll("path").data(drawCountry.features)
+                .enter().append("path")
+                .attr("class", "drawCountry")
+                .attr("d", pathDrawing)
+                .attr("fill", "lightgreen")
+                .append("title")
+                .text(                  //text show contents
+                    d=>countryName[d.id]
+                    );
+            
+            $("g").click(function(d){
+                d3.select("#chartsArea > *").remove();
+                
+
+                getName = d.target.__data__.properties.name;
+                drawInflaCharts(getName, csvData, height, width);
+                $("#inflatIndex").click(function(d){
+                    d3.select("#chartsArea > *").remove();
+                    drawInflaCharts(getName, csvData, height, width);})
+
+                $("#InHmIndex").click(function(d){
+                    d3.select("#chartsArea > *").remove();
+                    drawInHmCharts(getName, csvData, height, width);})
+                
+                $("#UmpRIdex").click(function(d){
+                    d3.select("#chartsArea > *").remove();
+                    drawUmpRHmCharts(getName, csvData, height, width);})
+                $("#ScMtIndex").click(function(d){
+                    d3.select("#chartsArea > *").remove();
+                    drawScMtCharts(getName, csvData, height, width);})               
+                });
+                
+        });
+/*-------------------------------------------------------World Map--------------------------------*/
+/*-------------------------------------------------------World Map--------------------------------*/
+/*-------------------------------------------------------World Map--------------------------------*/
+
+    
+
+
+</script>
+<script id="Function Section">
+/*-------------------------------------------------------Line Chart--------------------------------*/
+/*-------------------------------------------------------Line Chart--------------------------------*/
+/*-------------------------------------------------------Line Chart--------------------------------*/
+
+function drawInflaCharts(nameT, csvDataT, heightT, widthT){
+    let sortedObjectArray = [];
+    let height =heightT;
+    let width = widthT;
+    let name = nameT;
+    csvData.then(function(data){
+        data.forEach(function(data){   // calls a function once for each element in an array, in order
+            stringToNumber(data);
+            if (data["Country"] == name){
+                sortedObjectArray.push(data);} //filter by country and leave the targeted data with specific country
+            });
+   renderInflaChart(sortedObjectArray.sort(sortByYear), height, width);  //inflatChart
+            });}
+
+function drawInHmCharts(nameT, csvDataT, heightT, widthT){
+    let sortedObjectArray = [];
+    let height =heightT;
+    let width = widthT;
+    let name = nameT;
+    csvData.then(function(data){
+        data.forEach(function(data){   // calls a function once for each element in an array, in order
+            stringToNumber(data);
+            if (data["Country"] == name){
+                sortedObjectArray.push(data);} //filter by country and leave the targeted data with specific country
+            });
+    renderIntnHomcdChart(sortedObjectArray.sort(sortByYear), height, width);
+            });
+}
+
+function drawUmpRHmCharts(nameT, csvDataT, heightT, widthT){
+    let sortedObjectArray = [];
+    let height =heightT;
+    let width = widthT;
+    let name = nameT;
+    csvData.then(function(data){
+        data.forEach(function(data){   // calls a function once for each element in an array, in order
+            stringToNumber(data);
+            if (data["Country"] == name){
+                sortedObjectArray.push(data);} //filter by country and leave the targeted data with specific country
+            });
+    renderUnempltChart(sortedObjectArray.sort(sortByYear), height, width);
+            });
+}
+
+function drawScMtCharts(nameT, csvDataT, heightT, widthT){
+    let sortedObjectArray = [];
+    let height =heightT;
+    let width = widthT;
+    let name = nameT;
+    csvData.then(function(data){
+        data.forEach(function(data){   // calls a function once for each element in an array, in order
+            stringToNumber(data);
+            if (data["Country"] == name){
+                sortedObjectArray.push(data);} //filter by country and leave the targeted data with specific country
+            });
+    renderSMChart(sortedObjectArray.sort(sortByYear), height, width);
+            });
+}
+/*-------------------------------------------------------Line Chart--------------------------------*/
+/*-------------------------------------------------------Line Chart--------------------------------*/
+/*-------------------------------------------------------Line Chart--------------------------------*/
+</script>
+</body>
+</html>
