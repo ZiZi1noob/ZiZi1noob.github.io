@@ -375,7 +375,7 @@ const renderUnempltChart =  function(data, heightT, widthT){
 
  var svg = d3.select("#chartsArea") // 1. Add the SVG to the page and employ 
      .append("svg")
-     .attr("width", width*1.2)
+     .attr("width", width*2)
      .attr("height", height)
      .append("g")
      .attr("transform", "translate(" + width/4 + ", 0)"); //show the whole chart including axies.
@@ -491,7 +491,7 @@ const renderSMChart =  function(data, heightT, widthT){
    
     var svg = d3.select("#chartsArea") // 1. Add the SVG to the page and employ 
         .append("svg")
-        .attr("width", width*1.2)
+        .attr("width", width*2)
         .attr("height", height)
         .append("g")
         .attr("transform", "translate(" + width/4 + ", 0)"); //show the whole chart including axies.
